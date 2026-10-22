@@ -1,0 +1,41 @@
+[gd_scene load_steps=5 format=3 uid="uid://e1mutatedrat00"]
+
+[ext_resource type="Script" path="res://scripts/enemy/MutatedRat.gd" id="1_rat"]
+[ext_resource type="Texture2D" path="res://assets/sprites/enemies/mutated_rat_sheet.png" id="2_rat_tex"]
+[ext_resource type="Script" path="res://scripts/utils/SpriteAnimator.gd" id="3_animator"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_body"]
+size = Vector2(20, 12)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_attack"]
+size = Vector2(24, 14)
+
+[node name="MutatedRat" type="CharacterBody2D"]
+collision_layer = 4
+collision_mask = 1
+script = ExtResource("1_rat")
+enemy_frame_width = 32
+enemy_frame_height = 24
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 2)
+shape = SubResource("RectangleShape2D_body")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_rat_tex")
+region_enabled = true
+region_rect = Rect2(0, 0, 32, 24)
+
+[node name="AttackArea" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AttackArea"]
+position = Vector2(0, 1)
+shape = SubResource("RectangleShape2D_attack")
+
+[node name="SpriteAnimator" type="Node" parent="." node_paths=PackedStringArray("target_sprite")]
+script = ExtResource("3_animator")
+target_sprite = NodePath("../Sprite2D")
+default_frame_width = 32
+default_frame_height = 24

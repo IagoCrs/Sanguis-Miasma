@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=3 uid="uid://c0coopcamera2d"]
+
+[ext_resource type="Script" path="res://scripts/camera/CoopCamera2D.gd" id="1_cam"]
+
+[node name="CoopCamera2D" type="Camera2D"]
+position_smoothing_enabled = false
+script = ExtResource("1_cam")
+world_bounds = Rect2(-380, -180, 3960, 540)
+min_zoom = 0.65
+max_zoom = 1.25
+safe_padding = Vector2(120, 80)
+max_player_distance = 560.0
+smooth_speed = 6.0
+zoom_smooth_speed = 4.5
