@@ -1,5 +1,6 @@
 [gd_scene format=3 uid="uid://b28xulwu61c4m"]
 
+[ext_resource type="Script" uid="uid://c8po8xdnmrymy" path="res://entities/rat/rat.gd" id="1_dt4dc"]
 [ext_resource type="Texture2D" uid="uid://dyxrw21q0a83i" path="res://entities/rat/spritesheet.png" id="1_ykyuw"]
 [ext_resource type="Script" uid="uid://clhwwi12w6l18" path="res://entities/rat/animator.gd" id="2_sfh30"]
 [ext_resource type="PackedScene" uid="uid://bgi46w54hw8mm" path="res://components/hurt_box/hurt_box.tscn" id="3_sfh30"]
@@ -107,6 +108,7 @@ animations = [{
 
 [node name="Rat" type="CharacterBody2D" unique_id=52918493]
 collision_layer = 2
+script = ExtResource("1_dt4dc")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=2093469689]
 visibility_layer = 2

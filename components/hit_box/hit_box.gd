@@ -31,21 +31,22 @@ func _on_area_entered(area: Area2D) -> void:
 	var source: CharacterBody2D = get_parent()
 	var target: CharacterBody2D = area.get_parent()
 	
-	if area is HurtBox:
+	if area is HurtBox && target is Character:
 		print("[HIT] %s [%s] hit %s [%s]" % [
 			source.name,
 			source.get_instance_id(),
 			target.name,
 			target.get_instance_id()
 		])
+		target.hurt()
 		return
 	
 	# TODO: find a way to trigger it once instead of twice for each character
-	if area is HitBox:
-		print("[CLASH] %s [%s] clashed %s [%s]" % [
-			source.name,
-			source.get_instance_id(),
-			target.name,
-			target.get_instance_id()
-		])
-		return
+	#if area is HitBox:
+		#print("[CLASH] %s [%s] clashed %s [%s]" % [
+			#source.name,
+			#source.get_instance_id(),
+			#target.name,
+			#target.get_instance_id()
+		#])
+		#return
