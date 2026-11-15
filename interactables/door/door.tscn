@@ -1,0 +1,18 @@
+[gd_scene format=3 uid="uid://csmnigc4ty1pf"]
+
+[ext_resource type="Texture2D" uid="uid://bfngyg0l6luka" path="res://interactables/door/door-Sheet.png" id="1_rixxk"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_y8xgx"]
+size = Vector2(29, 46)
+
+[node name="Area2D" type="Area2D" unique_id=1780771821]
+collision_layer = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1197099233]
+position = Vector2(-0.5, 1)
+shape = SubResource("RectangleShape2D_y8xgx")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1255844840]
+texture = ExtResource("1_rixxk")
+region_enabled = true
+region_rect = Rect2(0, 0, 32, 48)
