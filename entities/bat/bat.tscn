@@ -1,0 +1,31 @@
+[gd_scene format=3 uid="uid://dq3vy04hp6d85"]
+
+[ext_resource type="Script" uid="uid://b0hjneqcdc6ee" path="res://entities/bat/bat.gd" id="1_q8l58"]
+[ext_resource type="Texture2D" uid="uid://0smbssbi6p1s" path="res://entities/bat/sprites/bat-Sheet.png" id="2_ct2lb"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_q8l58"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lqpo3"]
+atlas = ExtResource("2_ct2lb")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_q8l58"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lqpo3")
+}],
+"loop": 1,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="Bat" type="CharacterBody2D" unique_id=1195169566]
+collision_layer = 2
+script = ExtResource("1_q8l58")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=726204878]
+shape = SubResource("RectangleShape2D_q8l58")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1316241608]
+sprite_frames = SubResource("SpriteFrames_q8l58")

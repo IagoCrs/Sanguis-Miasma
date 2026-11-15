@@ -3,6 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://dyugwu1jq2jvv" path="res://scenes/test/ground.tscn" id="1_3k4al"]
 [ext_resource type="PackedScene" uid="uid://bqieul64k6wco" path="res://entities/knight/knight.tscn" id="2_ae60x"]
 [ext_resource type="PackedScene" uid="uid://b28xulwu61c4m" path="res://entities/rat/rat.tscn" id="3_o0ihb"]
+[ext_resource type="PackedScene" uid="uid://dq3vy04hp6d85" path="res://entities/bat/bat.tscn" id="4_o0ihb"]
 
 [node name="Main" type="Node2D" unique_id=424494062]
 
@@ -14,3 +15,7 @@ position = Vector2(178, 44)
 [node name="Rat" parent="." unique_id=52918493 instance=ExtResource("3_o0ihb")]
 position = Vector2(584, 606)
 scale = Vector2(3, 3)
+
+[node name="Bat" parent="." unique_id=1195169566 instance=ExtResource("4_o0ihb")]
+position = Vector2(830, 47)
+scale = Vector2(4, 4)
