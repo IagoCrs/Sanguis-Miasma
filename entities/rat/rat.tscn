@@ -106,8 +106,10 @@ animations = [{
 }]
 
 [node name="Rat" type="CharacterBody2D" unique_id=52918493]
+collision_layer = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=2093469689]
+visibility_layer = 2
 position = Vector2(1, -2.5)
 shape = SubResource("RectangleShape2D_y8xgx")
 
