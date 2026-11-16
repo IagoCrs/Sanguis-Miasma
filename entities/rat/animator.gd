@@ -17,9 +17,11 @@ func _process(_delta: float) -> void:
 	var is_moving_upwards: bool = rat.velocity.y < -1
 	
 	if is_moving_upwards:
-		play("jump")
+		#play("jump")
+		pass
 	elif is_moving_downwards:
-		play("fall")
+		#play("fall")
+		pass
 	elif is_moving_left or is_moving_right:
 		play("walk")
 	else:

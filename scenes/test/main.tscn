@@ -1,5 +1,6 @@
 [gd_scene format=3 uid="uid://bqefpipki25lf"]
 
+[ext_resource type="Script" uid="uid://c15frhu4n7l5y" path="res://scenes/test/main.gd" id="1_2qhjg"]
 [ext_resource type="PackedScene" uid="uid://dyugwu1jq2jvv" path="res://scenes/test/ground.tscn" id="1_3k4al"]
 [ext_resource type="PackedScene" uid="uid://bqieul64k6wco" path="res://entities/knight/knight.tscn" id="2_ae60x"]
 [ext_resource type="PackedScene" uid="uid://b28xulwu61c4m" path="res://entities/rat/rat.tscn" id="3_o0ihb"]
@@ -7,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://csmnigc4ty1pf" path="res://interactables/door/door.tscn" id="5_dxjet"]
 
 [node name="Main" type="Node2D" unique_id=424494062]
+script = ExtResource("1_2qhjg")
 
 [node name="LevelRoot" parent="." unique_id=864690240 instance=ExtResource("1_3k4al")]
 
@@ -17,10 +19,12 @@ scale = Vector2(3, 3)
 [node name="Knight" parent="." unique_id=1761124485 instance=ExtResource("2_ae60x")]
 position = Vector2(178, 44)
 
-[node name="Rat" parent="." unique_id=52918493 instance=ExtResource("3_o0ihb")]
+[node name="Enemies" type="Node2D" parent="." unique_id=1853828903]
+
+[node name="Rat" parent="Enemies" unique_id=52918493 instance=ExtResource("3_o0ihb")]
 position = Vector2(584, 606)
 scale = Vector2(3, 3)
 
-[node name="Bat" parent="." unique_id=1195169566 instance=ExtResource("4_o0ihb")]
+[node name="Bat" parent="Enemies" unique_id=1195169566 instance=ExtResource("4_o0ihb")]
 position = Vector2(830, 47)
 scale = Vector2(4, 4)
