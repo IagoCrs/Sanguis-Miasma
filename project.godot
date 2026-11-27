@@ -15,9 +15,10 @@ compatibility/default_parent_skeleton_in_mesh_instance_3d=true
 [application]
 
 config/name="Sanguis & Miasma"
-config/description="Jogo de ação/plataforma 2D em pixel art gótica com mecânicas de Miasma."
+config/description="Jogo de ação/plataforma 2D em pixel art gótica medieval"
 run/main_scene="res://scenes/game/CastleGame.tscn"
 config/features=PackedStringArray("4.7", "Forward Plus")
+config/icon="uid://vyvxq1v6h4jp"
 
 [autoload]
 
