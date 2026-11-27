@@ -4,6 +4,7 @@ extends Character
 signal enemy_died(enemy: Node)
 
 const COIN_PICKUP_SCENE: PackedScene = preload("res://interactables/pickup/coin_pickup.tscn")
+const CORRUPTED_SHADER: Shader = preload("res://shaders/corrupted_tint.gdshader")
 
 @export var max_hp: int = 1
 @export var aggro_range: float = 340.0
@@ -16,46 +17,36 @@ var is_boss_minion: bool = false
 var spawn_position: Vector2 = Vector2.ZERO
 var target: Character
 var base_modulate: Color = Color.WHITE
-var minion_aura: Polygon2D = null
-var aura_time: float = 0.0
 
 
 func _ready() -> void:
 	hp = max_hp
 	spawn_position = global_position
+	if is_boss_minion:
+		apply_corrupted_visual(Color(0.76, 0.22, 0.98, 1.0), 0.85)
 
 
-func _process(delta: float) -> void:
-	if is_instance_valid(minion_aura) and not is_dead:
-		aura_time += delta
-		var pulse := 1.0 + sin(aura_time * 5.2) * 0.14
-		minion_aura.scale = Vector2(pulse, pulse)
-		minion_aura.color.a = 0.28 + sin(aura_time * 5.2) * 0.10
+func apply_corrupted_visual(tint: Color = Color(0.76, 0.22, 0.98, 1.0), strength: float = 0.85) -> void:
+	var anim := get_node_or_null("AnimatedSprite2D") as CanvasItem
+	if not anim:
+		return
+	var mat := ShaderMaterial.new()
+	mat.shader = CORRUPTED_SHADER
+	mat.set_shader_parameter("tint_color", tint)
+	mat.set_shader_parameter("strength", strength)
+	anim.material = mat
+	anim.modulate = Color.WHITE
 
 
 func set_boss_minion(enabled: bool) -> void:
 	is_boss_minion = enabled
+	base_modulate = Color.WHITE
+	var anim := get_node_or_null("AnimatedSprite2D") as CanvasItem
 	if enabled:
-		base_modulate = Color(0.84, 0.58, 1.0)
-		var anim := get_node_or_null("AnimatedSprite2D")
-		if anim:
-			anim.modulate = base_modulate
-		if minion_aura == null:
-			minion_aura = Polygon2D.new()
-			minion_aura.z_index = -1
-			minion_aura.color = Color(0.65, 0.25, 0.96, 0.34)
-			var pts: PackedVector2Array = []
-			for i in range(10):
-				var ang := float(i) * TAU / 10.0
-				pts.append(Vector2(cos(ang) * 34.0, sin(ang) * 28.0))
-			minion_aura.polygon = pts
-			add_child(minion_aura)
-			move_child(minion_aura, 0)
-	else:
-		base_modulate = Color.WHITE
-		if is_instance_valid(minion_aura):
-			minion_aura.queue_free()
-			minion_aura = null
+		apply_corrupted_visual(Color(0.76, 0.22, 0.98, 1.0), 0.85)
+	elif anim:
+		anim.material = null
+		anim.modulate = Color.WHITE
 
 
 func track(value: Character) -> void:

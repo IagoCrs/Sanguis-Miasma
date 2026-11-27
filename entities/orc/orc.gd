@@ -50,8 +50,6 @@ var retreat_position: Vector2 = Vector2(720.0, 210.0)
 @onready var hit_box: HitBox = $HitBox
 
 var warn_label: Label = null
-var boss_aura: Polygon2D = null
-var boss_aura_time: float = 0.0
 
 
 func _ready() -> void:
@@ -62,11 +60,12 @@ func _ready() -> void:
 		attack_range = 114.0
 		coin_drop_min = 12
 		coin_drop_max = 15
-		base_tint = Color(0.76, 0.44, 1.0)
+		base_tint = Color.WHITE
 		combat_active = false
 		if sprite:
 			sprite.scale = Vector2(5.8, 5.8)
 			sprite.modulate = base_tint
+		apply_corrupted_visual(Color(0.84, 0.16, 0.94, 1.0), 0.88)
 		if collision_shape:
 			var rect := collision_shape.shape as RectangleShape2D
 			if rect:
@@ -79,7 +78,6 @@ func _ready() -> void:
 			hurt_box.position = Vector2(0, -4)
 		if hit_box:
 			hit_box.scale = Vector2(3.7, 3.7)
-		_create_boss_aura()
 	else:
 		max_hp = 5 if is_boss_minion else 7
 		aggro_range = 850.0 if is_boss_minion else 400.0
@@ -123,19 +121,6 @@ func set_boss_minion(enabled: bool) -> void:
 			sprite.modulate = base_tint
 
 
-func _create_boss_aura() -> void:
-	boss_aura = Polygon2D.new()
-	boss_aura.z_index = -1
-	boss_aura.color = Color(0.66, 0.25, 0.98, 0.36)
-	var pts: PackedVector2Array = []
-	for i in range(12):
-		var ang := float(i) * TAU / 12.0
-		pts.append(Vector2(cos(ang) * 58.0, sin(ang) * 52.0))
-	boss_aura.polygon = pts
-	add_child(boss_aura)
-	move_child(boss_aura, 0)
-
-
 func _create_warn_label() -> void:
 	warn_label = Label.new()
 	warn_label.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
@@ -162,15 +147,6 @@ func _set_warn_visible(show_it: bool, text_val: String = "!", col: Color = Color
 func start_boss_combat() -> void:
 	combat_active = true
 	state = State.CHASE
-
-
-func _process(delta: float) -> void:
-	super._process(delta)
-	if is_instance_valid(boss_aura) and not is_dead:
-		boss_aura_time += delta
-		var pulse := 1.0 + sin(boss_aura_time * 4.5) * 0.14
-		boss_aura.scale = Vector2(pulse, pulse)
-		boss_aura.color.a = 0.32 + sin(boss_aura_time * 4.5) * 0.12
 
 
 func _apply_facing(dir: float) -> void:
@@ -290,7 +266,7 @@ func return_from_retreat(wave_cleared: int) -> void:
 		return
 	chase_speed = 148.0 + float(wave_cleared) * 14.0
 	if wave_cleared >= 3:
-		base_tint = Color(0.88, 0.34, 1.0)
+		apply_corrupted_visual(Color(0.96, 0.16, 0.42, 1.0), 0.90)
 	var tw := create_tween()
 	tw.set_parallel(true)
 	tw.tween_property(self, "global_position", arena_home_position, 0.42)

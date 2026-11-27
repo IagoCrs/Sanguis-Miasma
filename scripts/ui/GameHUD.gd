@@ -39,12 +39,14 @@ const COIN_ICON_TEX: Texture2D = preload("res://assets/sprites/ui/coin_icon.png"
 @onready var buy_heal_btn: Button = $Root/ShopOverlay/Center/Panel/VBox/BuyHealBtn
 @onready var close_shop_btn: Button = $Root/ShopOverlay/Center/Panel/VBox/CloseShopBtn
 @onready var game_over_overlay: ColorRect = $Root/GameOverOverlay
+@onready var game_over_restart_btn: Button = $Root/GameOverOverlay/Center/Panel/VBox/GameOverRestartBtn
 @onready var victory_overlay: ColorRect = $Root/VictoryOverlay
 @onready var victory_hearts_label: Label = $Root/VictoryOverlay/Center/Panel/VBox/HeartsResultLabel
 @onready var pause_overlay: Control = $Root/PauseOverlay
 @onready var pause_card: PanelContainer = $Root/PauseOverlay/Center/PauseCard
 @onready var pause_settings_panel: SettingsPanel = $Root/PauseOverlay/Center/PauseSettingsPanel
 @onready var resume_btn: Button = $Root/PauseOverlay/Center/PauseCard/VBox/ResumeBtn
+@onready var restart_from_start_btn: Button = $Root/PauseOverlay/Center/PauseCard/VBox/RestartFromStartBtn
 @onready var pause_settings_btn: Button = $Root/PauseOverlay/Center/PauseCard/VBox/PauseSettingsBtn
 @onready var exit_to_menu_btn: Button = $Root/PauseOverlay/Center/PauseCard/VBox/ExitToMenuBtn
 
@@ -84,10 +86,14 @@ func _ready() -> void:
 		pause_settings_panel.back_requested.connect(_close_pause_settings)
 	if resume_btn:
 		resume_btn.pressed.connect(resume_game)
+	if restart_from_start_btn:
+		restart_from_start_btn.pressed.connect(restart_from_pause)
 	if pause_settings_btn:
 		pause_settings_btn.pressed.connect(_open_pause_settings)
 	if exit_to_menu_btn:
 		exit_to_menu_btn.pressed.connect(exit_game)
+	if game_over_restart_btn:
+		game_over_restart_btn.pressed.connect(_on_game_over_restart_pressed)
 	if fade_rect:
 		fade_rect.color.a = 0.0
 	if buy_dmg_btn:
@@ -463,6 +469,27 @@ func _close_pause_settings() -> void:
 		pause_card.visible = true
 
 
+func restart_from_pause() -> void:
+	if AudioManager:
+		AudioManager.play_ui_click_sfx()
+	is_paused = false
+	if pause_overlay:
+		pause_overlay.visible = false
+	if pause_settings_panel:
+		pause_settings_panel.visible = false
+	get_tree().paused = false
+	restart_game_requested.emit()
+
+
+func _on_game_over_restart_pressed() -> void:
+	if not is_overlay_active:
+		return
+	if AudioManager:
+		AudioManager.play_ui_click_sfx()
+	is_overlay_active = false
+	restart_game_requested.emit()
+
+
 func exit_game() -> void:
 	if AudioManager:
 		AudioManager.play_ui_click_sfx()
@@ -558,11 +585,5 @@ func _process(delta: float) -> void:
 
 	if is_overlay_active:
 		if Input.is_key_pressed(KEY_R) or Input.is_key_pressed(KEY_ENTER):
-			is_overlay_active = false
-			if is_victory_state:
-				restart_game_requested.emit()
-			else:
-				restart_level_requested.emit()
-		elif not is_victory_state and Input.is_key_pressed(KEY_T):
 			is_overlay_active = false
 			restart_game_requested.emit()

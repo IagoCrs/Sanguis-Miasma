@@ -664,6 +664,10 @@ func _on_restart_level_requested() -> void:
 
 
 func _on_restart_game_requested() -> void:
+	is_transitioning = false
+	get_tree().paused = false
+	if hud and hud.fade_rect:
+		hud.fade_rect.color.a = 0.0
 	max_player_hearts = 3
 	player_hearts = 3
 	sword_damage = 1
