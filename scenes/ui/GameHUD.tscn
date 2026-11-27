@@ -22,6 +22,17 @@ content_margin_top = 12.0
 content_margin_right = 14.0
 content_margin_bottom = 12.0
 
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_hint_stone"]
+texture = ExtResource("4_panel_stone")
+texture_margin_left = 12.0
+texture_margin_top = 12.0
+texture_margin_right = 12.0
+texture_margin_bottom = 12.0
+content_margin_left = 18.0
+content_margin_top = 10.0
+content_margin_right = 18.0
+content_margin_bottom = 10.0
+
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_banner"]
 texture = ExtResource("5_panel_banner")
 texture_margin_left = 14.0
@@ -223,22 +234,32 @@ theme_override_font_sizes/font_size = 16
 text = "Quebre caixas para descobrir recompensas"
 horizontal_alignment = 1
 
-[node name="ControlsHint" type="Label" parent="Root"]
+[node name="ControlsHintRow" type="HBoxContainer" parent="Root"]
 layout_mode = 1
-anchors_preset = 7
-anchor_left = 0.5
+anchors_preset = 12
 anchor_top = 1.0
-anchor_right = 0.5
+anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -480.0
-offset_top = -46.0
-offset_right = 480.0
+offset_top = -60.0
 offset_bottom = -14.0
 grow_horizontal = 2
 grow_vertical = 0
+mouse_filter = 2
+alignment = 1
+
+[node name="ControlsHintCard" type="PanelContainer" parent="Root/ControlsHintRow"]
+texture_filter = 1
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_hint_stone")
+
+[node name="ControlsHint" type="Label" parent="Root/ControlsHintRow/ControlsHintCard"]
+layout_mode = 2
 theme_override_colors/font_color = Color(0.92, 0.18, 0.24, 1)
 theme_override_colors/font_outline_color = Color(0.06, 0.01, 0.03, 1)
-theme_override_constants/outline_size = 5
+theme_override_constants/outline_size = 4
 theme_override_font_sizes/font_size = 16
 text = "[A/D ou Setas] Mover   •   [W/Espaço] Pular   •   [J/Z/Clique] Atacar"
 horizontal_alignment = 1

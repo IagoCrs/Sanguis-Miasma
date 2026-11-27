@@ -22,7 +22,8 @@ const COIN_ICON_TEX: Texture2D = preload("res://assets/sprites/ui/coin_icon.png"
 @onready var banner_panel: PanelContainer = $Root/LevelBanner
 @onready var banner_title: Label = $Root/LevelBanner/VBox/TitleLabel
 @onready var banner_sub: Label = $Root/LevelBanner/VBox/SubtitleLabel
-@onready var controls_hint: Label = $Root/ControlsHint
+@onready var controls_hint_card: PanelContainer = $Root/ControlsHintRow/ControlsHintCard
+@onready var controls_hint: Label = $Root/ControlsHintRow/ControlsHintCard/ControlsHint
 @onready var boss_panel: PanelContainer = $Root/BossPanel
 @onready var boss_name_label: Label = $Root/BossPanel/VBox/BossName
 @onready var boss_fill_rect: ColorRect = $Root/BossPanel/VBox/BossBarBG/BossFill
@@ -55,6 +56,7 @@ var shield_icons: Array[TextureRect] = []
 var last_hearts: int = 3
 var banner_timer: float = 0.0
 var controls_timer: float = 0.0
+var controls_tween: Tween = null
 var is_overlay_active: bool = false
 var is_victory_state: bool = false
 var is_shop_open: bool = false
@@ -222,11 +224,13 @@ func set_level_info(level_num: int, total_levels: int, title: String, subtitle: 
 		banner_panel.modulate.a = 1.0
 		banner_timer = 2.6
 
-	if controls_hint:
+	if controls_hint and controls_hint_card:
+		if controls_tween and controls_tween.is_valid():
+			controls_tween.kill()
 		var has_hint := hint_text != ""
 		controls_hint.text = hint_text
-		controls_hint.visible = has_hint
-		controls_hint.modulate.a = 1.0
+		controls_hint_card.visible = has_hint
+		controls_hint_card.modulate.a = 1.0
 		controls_timer = 9.0 if has_hint else 0.0
 
 
@@ -578,10 +582,12 @@ func _process(delta: float) -> void:
 
 	if controls_timer > 0.0:
 		controls_timer -= delta
-		if controls_timer <= 0.0 and controls_hint:
-			var tw := controls_hint.create_tween()
-			tw.tween_property(controls_hint, "modulate:a", 0.0, 0.5)
-			tw.tween_callback(func(): controls_hint.visible = false)
+		if controls_timer <= 0.0 and controls_hint_card:
+			if controls_tween and controls_tween.is_valid():
+				controls_tween.kill()
+			controls_tween = controls_hint_card.create_tween()
+			controls_tween.tween_property(controls_hint_card, "modulate:a", 0.0, 0.5)
+			controls_tween.tween_callback(func(): controls_hint_card.visible = false)
 
 	if is_overlay_active:
 		if Input.is_key_pressed(KEY_R) or Input.is_key_pressed(KEY_ENTER):
