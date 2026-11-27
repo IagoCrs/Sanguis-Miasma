@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://dirongate3tile"]
+
+[ext_resource type="Script" path="res://interactables/gate/iron_gate.gd" id="1_gate_gd"]
+[ext_resource type="Texture2D" path="res://assets/sprites/objects/iron_gate.png" id="2_gate_tex"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_gate"]
+size = Vector2(40, 144)
+
+[node name="IronGate" type="StaticBody2D"]
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("1_gate_gd")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture_filter = 1
+scale = Vector2(3, 3)
+texture = ExtResource("2_gate_tex")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_gate")

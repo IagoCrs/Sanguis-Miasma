@@ -1,0 +1,40 @@
+[gd_scene format=3 uid="uid://dtorch8castle"]
+
+[ext_resource type="Script" path="res://interactables/props/castle_torch.gd" id="1_torch_gd"]
+[ext_resource type="Texture2D" path="res://assets/sprites/objects/castle_torch_sheet.png" id="2_torch_tex"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_t0"]
+atlas = ExtResource("2_torch_tex")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_t1"]
+atlas = ExtResource("2_torch_tex")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_torch"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_t0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_t1")
+}],
+"loop": true,
+"name": &"default",
+"speed": 6.0
+}]
+
+[node name="CastleTorch" type="Node2D"]
+script = ExtResource("1_torch_gd")
+
+[node name="Glow" type="Polygon2D" parent="."]
+position = Vector2(0, -10)
+color = Color(1, 0.62, 0.22, 0.15)
+polygon = PackedVector2Array(-36, -24, -18, -42, 18, -42, 36, -24, 42, 0, 26, 28, -26, 28, -42, 0)
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+texture_filter = 1
+scale = Vector2(3, 3)
+sprite_frames = SubResource("SpriteFrames_torch")
+autoplay = "default"

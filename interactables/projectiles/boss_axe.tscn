@@ -1,0 +1,30 @@
+[gd_scene format=3 uid="uid://dbossaxeproj1"]
+
+[ext_resource type="Script" path="res://interactables/projectiles/boss_axe.gd" id="1_axe_gd"]
+[ext_resource type="Texture2D" path="res://assets/sprites/objects/boss_axe.png" id="2_axe_tex"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wall"]
+size = Vector2(22, 22)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_hit"]
+radius = 24.0
+
+[node name="BossAxe" type="CharacterBody2D"]
+collision_layer = 0
+collision_mask = 1
+script = ExtResource("1_axe_gd")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_wall")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture_filter = 1
+scale = Vector2(2.8, 2.8)
+texture = ExtResource("2_axe_tex")
+
+[node name="HitArea" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitArea"]
+shape = SubResource("CircleShape2D_hit")

@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://dcastleshop1"]
+
+[ext_resource type="Script" path="res://interactables/shop/castle_shop.gd" id="1_shop_gd"]
+[ext_resource type="Texture2D" path="res://assets/sprites/objects/merchant_stall.png" id="2_shop_tex"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_shop"]
+size = Vector2(144, 96)
+
+[node name="CastleShop" type="Area2D"]
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("1_shop_gd")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture_filter = 1
+scale = Vector2(3, 3)
+texture = ExtResource("2_shop_tex")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_shop")
