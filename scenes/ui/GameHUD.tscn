@@ -1,0 +1,573 @@
+[gd_scene format=3 uid="uid://cgamehud5castle"]
+
+[ext_resource type="Script" path="res://scripts/ui/GameHUD.gd" id="1_hud_gd"]
+[ext_resource type="Texture2D" path="res://assets/sprites/ui/coin_icon.png" id="2_coin_tex"]
+[ext_resource type="FontFile" path="res://assets/fonts/castle_pixel.fnt" id="3_castle_font"]
+[ext_resource type="Texture2D" path="res://assets/sprites/ui/panel_castle_stone.png" id="4_panel_stone"]
+[ext_resource type="Texture2D" path="res://assets/sprites/ui/panel_level_banner.png" id="5_panel_banner"]
+[ext_resource type="Texture2D" path="res://assets/sprites/ui/panel_boss_crimson.png" id="6_panel_boss"]
+[ext_resource type="Texture2D" path="res://assets/sprites/ui/button_castle.png" id="7_btn_norm"]
+[ext_resource type="Texture2D" path="res://assets/sprites/ui/button_castle_hover.png" id="8_btn_hover"]
+[ext_resource type="Shader" path="res://shaders/pause_blur.gdshader" id="9_blur_shader"]
+[ext_resource type="PackedScene" path="res://scenes/ui/SettingsPanel.tscn" id="10_settings_scene"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_stone"]
+texture = ExtResource("4_panel_stone")
+texture_margin_left = 12.0
+texture_margin_top = 12.0
+texture_margin_right = 12.0
+texture_margin_bottom = 12.0
+content_margin_left = 14.0
+content_margin_top = 12.0
+content_margin_right = 14.0
+content_margin_bottom = 12.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_banner"]
+texture = ExtResource("5_panel_banner")
+texture_margin_left = 14.0
+texture_margin_top = 14.0
+texture_margin_right = 14.0
+texture_margin_bottom = 14.0
+content_margin_left = 20.0
+content_margin_top = 14.0
+content_margin_right = 20.0
+content_margin_bottom = 14.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_boss"]
+texture = ExtResource("6_panel_boss")
+texture_margin_left = 12.0
+texture_margin_top = 12.0
+texture_margin_right = 12.0
+texture_margin_bottom = 12.0
+content_margin_left = 16.0
+content_margin_top = 12.0
+content_margin_right = 16.0
+content_margin_bottom = 12.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_btn_norm"]
+texture = ExtResource("7_btn_norm")
+texture_margin_left = 8.0
+texture_margin_top = 8.0
+texture_margin_right = 8.0
+texture_margin_bottom = 8.0
+content_margin_left = 12.0
+content_margin_top = 8.0
+content_margin_right = 12.0
+content_margin_bottom = 8.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_btn_hover"]
+texture = ExtResource("8_btn_hover")
+texture_margin_left = 8.0
+texture_margin_top = 8.0
+texture_margin_right = 8.0
+texture_margin_bottom = 8.0
+content_margin_left = 12.0
+content_margin_top = 8.0
+content_margin_right = 12.0
+content_margin_bottom = 8.0
+
+[sub_resource type="Theme" id="Theme_castle"]
+default_font = ExtResource("3_castle_font")
+default_font_size = 16
+Button/colors/font_color = Color(0.95, 0.92, 0.86, 1)
+Button/colors/font_disabled_color = Color(0.45, 0.44, 0.52, 1)
+Button/colors/font_hover_color = Color(1, 0.85, 0.45, 1)
+Button/styles/disabled = SubResource("StyleBoxTexture_btn_norm")
+Button/styles/focus = SubResource("StyleBoxTexture_btn_hover")
+Button/styles/hover = SubResource("StyleBoxTexture_btn_hover")
+Button/styles/normal = SubResource("StyleBoxTexture_btn_norm")
+Button/styles/pressed = SubResource("StyleBoxTexture_btn_hover")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_pause_blur"]
+shader = ExtResource("9_blur_shader")
+shader_parameter/blur_amount = 2.6
+shader_parameter/tint_color = Color(0.04, 0.02, 0.07, 0.48)
+
+[node name="GameHUD" type="CanvasLayer"]
+process_mode = 3
+layer = 15
+script = ExtResource("1_hud_gd")
+
+[node name="Root" type="Control" parent="."]
+texture_filter = 1
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme = SubResource("Theme_castle")
+
+[node name="TopLeftPanel" type="PanelContainer" parent="Root"]
+texture_filter = 1
+layout_mode = 0
+offset_left = 18.0
+offset_top = 14.0
+offset_right = 316.0
+offset_bottom = 138.0
+theme_override_styles/panel = SubResource("StyleBoxTexture_stone")
+
+[node name="VBox" type="VBoxContainer" parent="Root/TopLeftPanel"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="HeartsBox" type="HBoxContainer" parent="Root/TopLeftPanel/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="ShieldsBox" type="HBoxContainer" parent="Root/TopLeftPanel/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="StatusRow" type="HBoxContainer" parent="Root/TopLeftPanel/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="CoinIcon" type="TextureRect" parent="Root/TopLeftPanel/VBox/StatusRow"]
+texture_filter = 1
+custom_minimum_size = Vector2(22, 22)
+layout_mode = 2
+texture = ExtResource("2_coin_tex")
+stretch_mode = 5
+
+[node name="CoinLabel" type="Label" parent="Root/TopLeftPanel/VBox/StatusRow"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.84, 0.4, 1)
+theme_override_colors/font_outline_color = Color(0.05, 0.04, 0.08, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 16
+text = "0"
+
+[node name="Sep" type="Label" parent="Root/TopLeftPanel/VBox/StatusRow"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.55, 0.52, 0.65, 1)
+theme_override_font_sizes/font_size = 16
+text = "•"
+
+[node name="SwordLabel" type="Label" parent="Root/TopLeftPanel/VBox/StatusRow"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.85, 0.89, 0.94, 1)
+theme_override_colors/font_outline_color = Color(0.05, 0.04, 0.08, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 16
+text = "Espada: Pronta"
+
+[node name="TopRightPanel" type="PanelContainer" parent="Root"]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -430.0
+offset_top = 14.0
+offset_right = -18.0
+offset_bottom = 90.0
+grow_horizontal = 0
+theme_override_styles/panel = SubResource("StyleBoxTexture_stone")
+
+[node name="VBox" type="VBoxContainer" parent="Root/TopRightPanel"]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="LevelLabel" type="Label" parent="Root/TopRightPanel/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.91, 0.85, 1)
+theme_override_colors/font_outline_color = Color(0.05, 0.04, 0.08, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 16
+text = "FASE 1 / 10"
+horizontal_alignment = 2
+
+[node name="EnemiesLabel" type="Label" parent="Root/TopRightPanel/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.88, 0.85, 0.95, 1)
+theme_override_colors/font_outline_color = Color(0.05, 0.04, 0.08, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 16
+text = "Inimigos: 0"
+horizontal_alignment = 2
+
+[node name="LevelBanner" type="PanelContainer" parent="Root"]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -350.0
+offset_top = 96.0
+offset_right = 350.0
+offset_bottom = 186.0
+grow_horizontal = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_banner")
+
+[node name="VBox" type="VBoxContainer" parent="Root/LevelBanner"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="TitleLabel" type="Label" parent="Root/LevelBanner/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.82, 0.4, 1)
+theme_override_colors/font_outline_color = Color(0.05, 0.04, 0.08, 1)
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 32
+text = "I. SALÃO EM RUÍNAS"
+horizontal_alignment = 1
+
+[node name="SubtitleLabel" type="Label" parent="Root/LevelBanner/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.88, 0.86, 0.95, 1)
+theme_override_colors/font_outline_color = Color(0.05, 0.04, 0.08, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 16
+text = "Quebre caixas para descobrir recompensas"
+horizontal_alignment = 1
+
+[node name="ControlsHint" type="Label" parent="Root"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -480.0
+offset_top = -46.0
+offset_right = 480.0
+offset_bottom = -14.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_color = Color(0.95, 0.92, 0.98, 1)
+theme_override_colors/font_outline_color = Color(0.07, 0.05, 0.1, 1)
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 16
+text = "[A/D ou Setas] Mover   •   [W/Espaço] Pular   •   [J/Z/Clique] Atacar"
+horizontal_alignment = 1
+
+[node name="BossPanel" type="PanelContainer" parent="Root"]
+visible = false
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -260.0
+offset_top = -86.0
+offset_right = 260.0
+offset_bottom = -16.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxTexture_boss")
+
+[node name="VBox" type="VBoxContainer" parent="Root/BossPanel"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="BossName" type="Label" parent="Root/BossPanel/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.84, 0.62, 1, 1)
+theme_override_colors/font_outline_color = Color(0.05, 0.02, 0.06, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 16
+text = "TIRANO CORROMPIDO  (32 / 32)"
+horizontal_alignment = 1
+
+[node name="BossBarBG" type="ColorRect" parent="Root/BossPanel/VBox"]
+custom_minimum_size = Vector2(460, 14)
+layout_mode = 2
+color = Color(0.11, 0.06, 0.14, 1)
+
+[node name="BossFill" type="ColorRect" parent="Root/BossPanel/VBox/BossBarBG"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.66, 0.25, 0.96, 1)
+
+[node name="DialoguePanel" type="PanelContainer" parent="Root"]
+visible = false
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -420.0
+offset_top = -196.0
+offset_right = 420.0
+offset_bottom = -28.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxTexture_banner")
+
+[node name="VBox" type="VBoxContainer" parent="Root/DialoguePanel"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="SpeakerLabel" type="Label" parent="Root/DialoguePanel/VBox"]
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0.05, 0.03, 0.08, 1)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 22
+text = "TIRANO CORROMPIDO"
+
+[node name="BodyLabel" type="Label" parent="Root/DialoguePanel/VBox"]
+custom_minimum_size = Vector2(760, 54)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.92, 0.98, 1)
+theme_override_colors/font_outline_color = Color(0.05, 0.03, 0.08, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 16
+text = "Texto narrativo..."
+autowrap_mode = 3
+
+[node name="PromptLabel" type="Label" parent="Root/DialoguePanel/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.84, 0.4, 1)
+theme_override_font_sizes/font_size = 14
+text = "[Espaço / Enter / Clique] Continuar ▶"
+horizontal_alignment = 2
+
+[node name="FadeRect" type="ColorRect" parent="Root"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.04, 0.02, 0.06, 0)
+
+[node name="ShopOverlay" type="ColorRect" parent="Root"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.04, 0.02, 0.07, 0.78)
+
+[node name="Center" type="CenterContainer" parent="Root/ShopOverlay"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="PanelContainer" parent="Root/ShopOverlay/Center"]
+texture_filter = 1
+custom_minimum_size = Vector2(580, 0)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_stone")
+
+[node name="VBox" type="VBoxContainer" parent="Root/ShopOverlay/Center/Panel"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="ShopTitle" type="Label" parent="Root/ShopOverlay/Center/Panel/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.82, 0.4, 1)
+theme_override_colors/font_outline_color = Color(0.05, 0.04, 0.08, 1)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 32
+text = "LOJA DO MERCADOR"
+horizontal_alignment = 1
+
+[node name="ShopCoinsLabel" type="Label" parent="Root/ShopOverlay/Center/Panel/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.9, 0.75, 1)
+theme_override_font_sizes/font_size = 16
+text = "Suas Moedas: 0"
+horizontal_alignment = 1
+
+[node name="BuyDmgBtn" type="Button" parent="Root/ShopOverlay/Center/Panel/VBox"]
+layout_mode = 2
+text = "[1] Lâmina Afiada (+1 Dano) — 15 Moedas"
+
+[node name="BuyHpBtn" type="Button" parent="Root/ShopOverlay/Center/Panel/VBox"]
+layout_mode = 2
+text = "[2] Vigor Rubro (+1 Vida Máx) — 18 Moedas"
+
+[node name="BuyShieldBtn" type="Button" parent="Root/ShopOverlay/Center/Panel/VBox"]
+layout_mode = 2
+text = "[3] Égide de Ferro (+1 Escudo) — 15 Moedas"
+
+[node name="BuyHealBtn" type="Button" parent="Root/ShopOverlay/Center/Panel/VBox"]
+layout_mode = 2
+text = "[4] Elixir Rubro (+1 Coração) — 8 Moedas"
+
+[node name="CloseShopBtn" type="Button" parent="Root/ShopOverlay/Center/Panel/VBox"]
+layout_mode = 2
+text = "[E / ESC] Fechar Loja"
+
+[node name="GameOverOverlay" type="ColorRect" parent="Root"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.05, 0.02, 0.06, 0.76)
+
+[node name="Center" type="CenterContainer" parent="Root/GameOverOverlay"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="PanelContainer" parent="Root/GameOverOverlay/Center"]
+texture_filter = 1
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_boss")
+
+[node name="VBox" type="VBoxContainer" parent="Root/GameOverOverlay/Center/Panel"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Title" type="Label" parent="Root/GameOverOverlay/Center/Panel/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.25, 0.35, 1)
+theme_override_colors/font_outline_color = Color(0.05, 0.02, 0.06, 1)
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 32
+text = "VOCÊ CAIU"
+horizontal_alignment = 1
+
+[node name="Sub" type="Label" parent="Root/GameOverOverlay/Center/Panel/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.88, 0.94, 1)
+theme_override_font_sizes/font_size = 16
+text = "[R / ENTER] Tentar Sala Novamente   •   [T] Reiniciar da Fase 1"
+horizontal_alignment = 1
+
+[node name="VictoryOverlay" type="ColorRect" parent="Root"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.05, 0.03, 0.08, 0.76)
+
+[node name="Center" type="CenterContainer" parent="Root/VictoryOverlay"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="PanelContainer" parent="Root/VictoryOverlay/Center"]
+texture_filter = 1
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_stone")
+
+[node name="VBox" type="VBoxContainer" parent="Root/VictoryOverlay/Center/Panel"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Title" type="Label" parent="Root/VictoryOverlay/Center/Panel/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.82, 0.4, 1)
+theme_override_colors/font_outline_color = Color(0.05, 0.04, 0.08, 1)
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 32
+text = "CASTELO PURIFICADO!"
+horizontal_alignment = 1
+
+[node name="HeartsResultLabel" type="Label" parent="Root/VictoryOverlay/Center/Panel/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.45, 0.55, 1)
+theme_override_font_sizes/font_size = 16
+text = "Corações: 3 / 3   •   Moedas: 0"
+horizontal_alignment = 1
+
+[node name="Sub" type="Label" parent="Root/VictoryOverlay/Center/Panel/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.88, 0.94, 1)
+theme_override_font_sizes/font_size = 16
+text = "Todas as 10 fases foram conquistadas!  •  [R / ENTER] Jogar Novamente"
+horizontal_alignment = 1
+
+[node name="PauseOverlay" type="Control" parent="Root"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="BlurBackground" type="ColorRect" parent="Root/PauseOverlay"]
+material = SubResource("ShaderMaterial_pause_blur")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Center" type="CenterContainer" parent="Root/PauseOverlay"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PauseCard" type="PanelContainer" parent="Root/PauseOverlay/Center"]
+texture_filter = 1
+custom_minimum_size = Vector2(400, 0)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_stone")
+
+[node name="VBox" type="VBoxContainer" parent="Root/PauseOverlay/Center/PauseCard"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="PauseTitle" type="Label" parent="Root/PauseOverlay/Center/PauseCard/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.82, 0.4, 1)
+theme_override_colors/font_outline_color = Color(0.05, 0.04, 0.08, 1)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 32
+text = "JOGO PAUSADO"
+horizontal_alignment = 1
+
+[node name="PauseGameName" type="Label" parent="Root/PauseOverlay/Center/PauseCard/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.88, 0.14, 0.22, 1)
+theme_override_colors/font_outline_color = Color(0.05, 0.02, 0.04, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 16
+text = "Sanguis & Miasma"
+horizontal_alignment = 1
+
+[node name="ResumeBtn" type="Button" parent="Root/PauseOverlay/Center/PauseCard/VBox"]
+custom_minimum_size = Vector2(0, 44)
+layout_mode = 2
+text = "Retomar Jogo"
+
+[node name="PauseSettingsBtn" type="Button" parent="Root/PauseOverlay/Center/PauseCard/VBox"]
+custom_minimum_size = Vector2(0, 44)
+layout_mode = 2
+text = "Configurações"
+
+[node name="ExitToMenuBtn" type="Button" parent="Root/PauseOverlay/Center/PauseCard/VBox"]
+custom_minimum_size = Vector2(0, 44)
+layout_mode = 2
+text = "Sair do Jogo"
+
+[node name="PauseSettingsPanel" parent="Root/PauseOverlay/Center" instance=ExtResource("10_settings_scene")]
+visible = false
+layout_mode = 2
